@@ -96,7 +96,7 @@ class User():
             case _:
                 self.response["msg"] = "query invaild"
                 return
-        data = {"count":users.count(), "query":[]}
+        data = {"count":users.count(), "info":[]}
         for query in users.values():
             query.pop("password")
             query["balance"] = float(query["balance"])
@@ -109,7 +109,7 @@ class User():
             plates = DBPlateNumber.objects.filter(user=int(query["id"]))
             for plate in plates.values():
                 query["plates"].append(plate["plate"])
-            data["query"].append(query)
+            data["info"].append(query)
         self.response["data"] = data
         self.response["status"] = 0
         self.response["msg"] = "success"
@@ -157,7 +157,12 @@ class User():
             try:
                 user = DBUser.objects.get(name=name)
                 if ("new_name" in self.request.POST):
-                    user.phone = self.request.POST["new_name"]
+                    try:
+                        new_user = DBUser.objects.get(name=self.request.POST["new_name"])
+                        self.response["msg"] = "user already exists"
+                        return
+                    except DBUser.DoesNotExist:
+                        user.name = self.request.POST["new_name"]
                 if ("phone" in self.request.POST):
                     user.phone = self.request.POST["phone"]
                 if ("email" in self.request.POST):

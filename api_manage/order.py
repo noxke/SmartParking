@@ -136,7 +136,7 @@ class Order():
                 else:
                     self.response["msg"] = "query invaild"
                     return
-        data = {"count":len(query_result), "query":[]}
+        data = {"count":len(query_result), "info":[]}
         for query in query_result:
             plate_id = query.pop("plate_id")
             query["plate"] = DBPlateNumber.objects.get(id=plate_id).plate
@@ -154,7 +154,7 @@ class Order():
             minutes = (total_seconds % 3600) // 60
             seconds = total_seconds % 60
             query["duration"] = "{}:{:02d}:{:02d}".format(hours, minutes, seconds)
-            data["query"].append(query)
+            data["info"].append(query)
         self.response["data"] = data
         self.response["status"] = 0
         self.response["msg"] = "success"
