@@ -1,0 +1,6 @@
+*/__pycache__
+install.lock
+venv
+certs/*
+mysql-data
+*/migrations
