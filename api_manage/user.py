@@ -90,9 +90,9 @@ class User():
             case "plate":
                 try:
                     user = DBPlateNumber.objects.get(plate=query_value).user
-                    users= DBUser.objects.get(id=user.id)
+                    users= DBUser.objects.filter(id=user.id)
                 except DBUser.DoesNotExist:
-                    users = []
+                    users = DBUser.objects.filter(id=-1)
             case _:
                 self.response["msg"] = "query invaild"
                 return
