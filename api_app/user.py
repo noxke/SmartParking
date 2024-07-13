@@ -80,6 +80,9 @@ class User():
         """用户详细信息"""
         user = DBUser.objects.get(name=self.session["user"])
         data = {"info":{}}
+        data["info"]["name"] = user.name
+        data["info"]["phone"] = user.phone
+        data["info"]["email"] = user.email
         data["info"]["balance"] = float(user.balance)
         data["info"]["register_time"] = user.register_time.astimezone(timezone.get_current_timezone()).strftime("%Y-%m-%d %H:%M:%S")
         if (user.last_login != None):

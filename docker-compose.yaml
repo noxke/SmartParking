@@ -6,13 +6,12 @@ services:
       context: .
       dockerfile: Dockerfile
     working_dir: /app
-    user: '1000:1000'
     ports:
       - 8443:8443
     volumes:
       - .:/app
     environment:
-      APP_HOSTNAME: localhost
+      APP_HOSTNAME: parking.xwysyy.cn
       DB_HOST: mysql
       DB_PORT: 3306
       DB_DATABASE: pk_db
@@ -38,10 +37,27 @@ services:
       MYSQL_DATABASE: pk_db
       MYSQL_USER: db_user
       MYSQL_PASSWORD: db_passwd
+    ports:
+      - 3308:3306
     networks:
       - app-net
     hostname: mysql
     restart: always
+
+  web-nginx:
+    image: nginx:alpine
+    privileged: true
+    environment:
+      TZ: Asia/Shanghai
+    restart: always
+    volumes:
+      - ./Web/nginx.conf:/etc/nginx/conf.d/my.conf
+      - ./Web/dist:/usr/share/nginx/html
+      - ./Web/cert:/etc/nginx/cert
+    networks:
+      - app-net
+    ports:
+      - '8444:443'
 
   adminer:
     image: adminer:latest
