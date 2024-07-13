@@ -26,6 +26,10 @@ def api_handler(request:HttpRequest, path=""):
             from .plate import Plate
             router = Plate(request, session, method)
             response = router.response
+        case "price":
+            from .price import Price
+            router = Price(request, session, method)
+            response = router.response
         case "order":
             from .order import Order
             router = Order(request, session, method)
