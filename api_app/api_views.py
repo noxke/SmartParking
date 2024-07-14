@@ -26,6 +26,10 @@ def api_handler(request:HttpRequest, path=""):
             from .order import Order
             router = Order(request, session, method)
             response = router.response
+        case "notice":
+            from .notice import Notice
+            router = Notice(request, session, method)
+            response = router.response
         case _:
             response = {"status": -1, "msg": "unknown api", "data": None}
     try:
